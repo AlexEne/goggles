@@ -6,6 +6,7 @@ use std::{
 };
 
 use hibitset::{AtomicBitSet, BitSet, BitSetLike, BitSetOr};
+use serde_derive::*;
 use thiserror::Error;
 
 use crate::join::{Index, Join};
@@ -21,7 +22,7 @@ pub struct WrongGeneration;
 /// result in an incremented `generation` field.
 ///
 /// No two entities will share the same `index` and `generation`, so every created `Entity` is unique.
-#[derive(Clone, Copy, Debug, Hash, Eq, Ord, PartialEq, PartialOrd)]
+#[derive(Clone, Copy, Debug, Hash, Eq, Ord, PartialEq, PartialOrd, Serialize, Deserialize)]
 pub struct Entity {
     index: Index,
     generation: AliveGeneration,
@@ -346,7 +347,7 @@ impl Generation {
 // A generation that is guaranteed to be alive.
 //
 // Since the generation id cannot be 0, this can use `NZGenId` and enable layout optimizations.
-#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
+#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, Serialize, Deserialize)]
 struct AliveGeneration(NZGenId);
 
 impl AliveGeneration {
